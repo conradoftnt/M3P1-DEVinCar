@@ -1,7 +1,7 @@
-﻿using DEVinCar.Api.Models;
-using DEVinCar.Api.Data;
-using DEVinCar.Api.DTOs;
-using DEVinCar.Api.ViewModels;
+﻿using DEVinCar.Infra.Data;
+using DEVinCar.Domain.DTOs;
+using DEVinCar.Domain.Models;
+using DEVinCar.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
@@ -164,7 +164,7 @@ public class StatesController : ControllerBase
     [HttpGet("{stateId}/city")]
     public ActionResult<GetCityByIdViewModel> GetCityByStateId(
         [FromRoute] int stateId,
-        [FromQuery] string? name
+        [FromQuery] string name
        )
     
     {

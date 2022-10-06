@@ -1,6 +1,6 @@
-﻿using DEVinCar.Api.Models;
-using DEVinCar.Api.Data;
-using DEVinCar.Api.DTOs;
+﻿using DEVinCar.Infra.Data;
+using DEVinCar.Domain.DTOs;
+using DEVinCar.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Runtime.ConstrainedExecution;

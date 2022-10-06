@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using DEVinCar.Api.Data;
-using DEVinCar.Api.DTOs;
-using DEVinCar.Api.Models;
+using DEVinCar.Infra.Data;
+using DEVinCar.Domain.DTOs;
+using DEVinCar.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DEVinCar.Api.ViewModels;
+using DEVinCar.Domain.ViewModels;
 
 namespace DEVinCar.Api.Controllers;
 
@@ -153,7 +153,7 @@ public class SalesController : ControllerBase
             _context.SaveChanges();
             return NoContent();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return BadRequest();
         }
