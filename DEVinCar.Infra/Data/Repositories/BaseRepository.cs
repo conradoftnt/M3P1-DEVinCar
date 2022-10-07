@@ -30,9 +30,9 @@ public class BaseRepository <TEntity, TKey> where TEntity : class
 
     public virtual void Update(TEntity entity)
     {
-        _context.Entry(entity).State = EntityState.Modified;
+        _context.Set<TEntity>().Update(entity);
     }
-    
+
     public virtual void Delete(TKey id)
     {
         TEntity entity = GetById(id);
