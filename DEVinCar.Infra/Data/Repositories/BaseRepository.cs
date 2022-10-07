@@ -1,33 +1,42 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace DEVinCar.Infra.Data.Repositories;
 
 public class BaseRepository <TEntity, TKey> where TEntity : class 
 {
     protected readonly DevInCarDbContext _context;
+    protected DbSet<TEntity> table;
 
     public BaseRepository(DevInCarDbContext context)
     {
         _context = context;
+        table = _context.Set<TEntity>();
     }
 
     public virtual TEntity GetById(TKey id)
     {
-        return _context.Set<TEntity>().Find(id);
+        return table.Find(id);
     }
 
     public virtual List<TEntity> GetAll()
     {
-        return _context.Set<TEntity>().ToList();
+        return table.ToList();
     }
 
     public virtual void Insert(TEntity entity)
     {
-        _context.Set<TEntity>().Add(entity);
+        table.Add(entity);
     }
 
+    public virtual void Update(TEntity entity)
+    {
+        _context.Entry(entity).State = EntityState.Modified;
+    }
+    
     public virtual void Delete(TKey id)
     {
         TEntity entity = GetById(id);
-        _context.Set<TEntity>().Remove(entity);
+        table.Remove(entity);
     }
 
     public virtual void Save()
