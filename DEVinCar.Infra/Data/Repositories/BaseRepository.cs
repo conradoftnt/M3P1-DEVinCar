@@ -1,8 +1,6 @@
-using DEVinCar.Domain.Interfaces.Repositories;
-
 namespace DEVinCar.Infra.Data.Repositories;
 
-public class BaseRepository <TEntity, TKey> : IBaseRepository <TEntity, TKey> where TEntity : class 
+public class BaseRepository <TEntity, TKey> where TEntity : class 
 {
     protected readonly DevInCarDbContext _context;
 
