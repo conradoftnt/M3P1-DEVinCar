@@ -6,11 +6,11 @@ using DEVinCar.Domain.Exceptions;
 
 namespace DEVinCar.Domain.Services;
 
-public class CarService : ICarsService
+public class CarsService : ICarsService
 {
     private ICarRepository _repository;
 
-    public CarService(ICarRepository repository)
+    public CarsService(ICarRepository repository)
     {
         _repository = repository;
     }
