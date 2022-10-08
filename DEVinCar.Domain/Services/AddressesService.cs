@@ -41,7 +41,7 @@ public class AddressesService : IAddressesService
 
         if (!addressesList.ToList().Any())
         {
-            throw new NoContentException();
+            throw new NoContentException("No addresses found in database.");
         }
 
         return(addressesList.ToList());
