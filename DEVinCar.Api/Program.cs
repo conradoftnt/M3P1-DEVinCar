@@ -1,12 +1,22 @@
 using System.Text.Json.Serialization;
 using DEVinCar.Infra.Data;
+using DEVinCar.Domain.Interfaces.Repositories;
+using DEVinCar.Infra.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<DevInCarDbContext>();
+
+builder.Services.AddScoped<IAddressesRepository,AddressesRepository>();
+builder.Services.AddScoped<ICarRepository,CarRepository>();
+builder.Services.AddScoped<IDeliverRepository,DeliverRepository>();
+builder.Services.AddScoped<ISalesRepository,SalesRepository>();
+builder.Services.AddScoped<IStatesRepository,StatesRepository>();
+builder.Services.AddScoped<IUsersRepository,UsersRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DevInCarDbContext>();
 
 var app = builder.Build();
 
