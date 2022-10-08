@@ -3,7 +3,7 @@ using DEVinCar.Domain.Interfaces.Repositories;
 
 namespace DEVinCar.Infra.Data.Repositories;
 
-public class UsersRepository : BaseRepository<Car, int>, IUsersRepository
+public class UsersRepository : BaseRepository<User, int>, IUsersRepository
 {
     public UsersRepository(DevInCarDbContext context) : base(context)
     {}
