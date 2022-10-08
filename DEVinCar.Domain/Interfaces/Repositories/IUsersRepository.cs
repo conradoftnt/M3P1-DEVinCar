@@ -2,7 +2,7 @@ using DEVinCar.Domain.Models;
 
 namespace DEVinCar.Domain.Interfaces.Repositories;
 
-public interface IUsersRepository
+public interface IUsersRepository : IBaseRepository<User, int>
 {
     IQueryable<Sale> GetUserBuysById(int userId);
 

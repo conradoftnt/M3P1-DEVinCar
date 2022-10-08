@@ -2,7 +2,7 @@ using DEVinCar.Domain.Models;
 
 namespace DEVinCar.Domain.Interfaces.Repositories;
 
-public interface ISalesRepository
+public interface ISalesRepository : IBaseRepository<Sale, int>
 {
 
     bool HaveSaleId(int saleId);
