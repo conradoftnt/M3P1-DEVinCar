@@ -1,6 +1,5 @@
 using System.Security.AccessControl;
 using System;
-using Microsoft.EntityFrameworkCore;
 
 namespace DEVinCar.Domain.Models;
 public class Delivery
