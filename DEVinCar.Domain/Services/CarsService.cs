@@ -8,7 +8,7 @@ namespace DEVinCar.Domain.Services;
 
 public class CarsService : ICarsService
 {
-    private ICarRepository _repository;
+    private readonly ICarRepository _repository;
 
     public CarsService(ICarRepository repository)
     {

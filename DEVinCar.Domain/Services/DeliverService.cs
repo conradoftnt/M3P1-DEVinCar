@@ -9,7 +9,7 @@ namespace DEVinCar.Domain.Services;
 
 public class DeliverService : IDeliverService
 {
-    private IDeliverRepository _repository;
+    private readonly IDeliverRepository _repository;
 
     public DeliverService(IDeliverRepository repository)
     {

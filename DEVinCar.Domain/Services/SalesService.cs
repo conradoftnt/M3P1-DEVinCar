@@ -8,7 +8,7 @@ namespace DEVinCar.Domain.Services;
 
 public class SalesService : ISalesService
 {
-    ISalesRepository _repository;
+    private readonly ISalesRepository _repository;
 
     public SalesService(ISalesRepository repository)
     {
