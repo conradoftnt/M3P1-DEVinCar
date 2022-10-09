@@ -4,6 +4,7 @@ using DEVinCar.Domain.Interfaces.Repositories;
 using DEVinCar.Infra.Data.Repositories;
 using DEVinCar.Domain.Interfaces.Services;
 using DEVinCar.Domain.Services;
+using DEVinCar.Api.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,7 @@ if (app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseMiddleware<ErrorMiddleware>();
 
 app.MapControllers();
 
