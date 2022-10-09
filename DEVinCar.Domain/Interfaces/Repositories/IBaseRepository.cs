@@ -7,5 +7,5 @@ public interface IBaseRepository<TEntity, TKey>
     void Insert(TEntity entity);
     void Update(TEntity entity);
     void Delete(TKey id);
-
+    void Save();
 }

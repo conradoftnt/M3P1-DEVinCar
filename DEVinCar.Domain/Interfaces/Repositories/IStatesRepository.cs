@@ -6,11 +6,11 @@ public interface IStatesRepository : IBaseRepository<State, int>
 {
     bool HaveCityInState(int stateId, string cityName);
 
-    void InsertCity(City city);
+    City InsertCity(City city);
 
     City GetCityById(int cityId);
 
-    void InsertAddress(Address address);
+    Address InsertAddress(Address address);
 
     IQueryable<City> GetCitiesWithStateId(int stateId);
 }
