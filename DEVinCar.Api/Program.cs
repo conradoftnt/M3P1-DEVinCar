@@ -5,6 +5,7 @@ using DEVinCar.Infra.Data.Repositories;
 using DEVinCar.Domain.Interfaces.Services;
 using DEVinCar.Domain.Services;
 using DEVinCar.Api.Config;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,12 @@ builder.Services.AddScoped<IUsersService,UsersService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMvc( config => {
+    config.ReturnHttpNotAcceptable = true;
+    config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+    config.InputFormatters.Add(new XmlSerializerInputFormatter(config));
+});
 
 var app = builder.Build();
 
