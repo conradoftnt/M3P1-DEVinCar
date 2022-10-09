@@ -1,7 +1,7 @@
-﻿using DEVinCar.Infra.Data;
-using DEVinCar.Domain.DTOs;
+﻿using DEVinCar.Domain.DTOs;
 using DEVinCar.Domain.Models;
 using DEVinCar.Domain.ViewModels;
+using DEVinCar.Domain.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +11,11 @@ namespace DEVinCar.Api.Controllers;
 [Route("api/state")]
 public class StatesController : ControllerBase
 {
-    private readonly DevInCarDbContext _context;
+    private readonly IStatesService _service;
 
-    public StatesController(DevInCarDbContext context)
+    public StatesController(IStatesService service)
     {
-        _context = context;
+        _service = service;
     }
 
     [HttpPost("{stateId}/city")]
@@ -24,29 +24,7 @@ public class StatesController : ControllerBase
         [FromBody] CityDTO cityDTO
     )
     {
-        var state = _context.States.Find(stateId);
-
-        if (state == null)
-        {
-            return NotFound();
-        }
-
-        if (_context.Cities.Any(c => c.StateId == state.Id && c.Name == cityDTO.Name))
-        {
-            return BadRequest();
-        }
-
-        var city = new City
-        {
-            Name = cityDTO.Name,
-            StateId = stateId,
-        };
-
-        _context.Cities.Add(city);
-
-        _context.SaveChanges();
-
-        return Created("api/{stateId}/city", city.Id);
+        return Created("api/{stateId}/city", _service.PostCity(stateId, cityDTO));
     }
 
     [HttpPost("{stateId}/city/{cityId}/address")]
@@ -55,32 +33,7 @@ public class StatesController : ControllerBase
         [FromRoute] int cityId,
         [FromBody] AdressDTO body)
     {
-        var idState = _context.States.Find(stateId);
-        var idCity = _context.Cities.Find(cityId);
-
-        if (idState == null || idCity == null)
-        {
-            return NotFound();
-        }
-
-        if (idCity.StateId != idState.Id)
-        {
-            return BadRequest();
-        }
-
-        var address = new Address
-        {
-            CityId = cityId,
-            Street = body.Street,
-            Number = body.Number,
-            Cep = body.Cep,
-            Complement = body.Complement,
-            City = idCity
-
-        };
-        _context.Addresses.Add(address);
-        _context.SaveChanges();
-        return Created($"api/state/{stateId}/city/{cityId}/", address.Id);
+        return Created($"api/state/{stateId}/city/{cityId}/", _service.PostAdress(stateId, cityId, body));
     }
 
     [HttpGet("{stateId}/city/{cityId}")]
@@ -91,25 +44,18 @@ public class StatesController : ControllerBase
         [FromRoute] int cityId
     )
     {
-        var idState = _context.States.Find(stateId);
-        var idCity = _context.Cities.Find(cityId);
 
-        if (idState == null || idCity == null)
-        {
-            return NotFound();
-        }
+        Tuple<City, State> response = _service.GetCityById(stateId, cityId);
 
-        if (idCity.StateId != idState.Id)
-        {
-            return BadRequest();
-        }
+        City city = response.Item1;
+        State state = response.Item2;
 
         GetCityByIdViewModel body = new GetCityByIdViewModel(
-            idCity.Id,
-            idCity.Name,
-            idState.Id,
-            idState.Name,
-            idState.Initials
+            city.Id,
+            city.Name,
+            state.Id,
+            state.Name,
+            state.Initials
         );
 
         return Ok(body);
@@ -120,45 +66,38 @@ public class StatesController : ControllerBase
             [FromRoute] int stateId
         )
     {
-        var filterState = _context.States.Find(stateId);
-        if (filterState == null)
-        {
-            return NotFound("There is no given with this id");
-        }
+        State state = _service.GetStateById(stateId);
 
-        var response = new GetStateByIdViewModel(
-            filterState.Id,
-            filterState.Name,
-            filterState.Initials
+        GetStateByIdViewModel body = new GetStateByIdViewModel(
+            state.Id,
+            state.Name,
+            state.Initials
             );
-       
-        return Ok(response);
+
+        return Ok(body);
     }
 
     [HttpGet]
-    public ActionResult<List<GetStateViewModel>> Get([FromQuery] string name) {
-        var query = _context.States.AsQueryable();
+    public ActionResult<List<GetStateViewModel>> Get([FromQuery] string name)
+    {
 
-        if(!string.IsNullOrEmpty(name)) {
-            query = query.Where(s => s.Name.ToUpper().Contains(name.ToUpper()));
-        }
-        if(query.Any()) {
-            List<GetStateViewModel> getStateViewModels = new List<GetStateViewModel>();
-            query
-                .Include(s => s.Cities)
-                .ToList().ForEach(state =>
+        List<State> statesList = _service.Get(name);
+
+        List<GetStateViewModel> getStateViewModels = new List<GetStateViewModel>();
+
+        statesList.ForEach(state =>
+            {
+                GetStateViewModel getState = new GetStateViewModel(state.Id, state.Name, state.Initials);
+
+                state.Cities.ForEach(city =>
                 {
-                    GetStateViewModel getState = new GetStateViewModel(state.Id, state.Name, state.Initials);
-                    state.Cities.ForEach(city =>
-                    {
-                        getState.Cities.Add(city.Name);
-                    });
-                    getStateViewModels.Add(getState);
+                    getState.Cities.Add(city.Name);
                 });
-            return Ok(getStateViewModels);
-        }
 
-        return NoContent();
+                getStateViewModels.Add(getState);
+            });
+
+        return Ok(getStateViewModels);
     }
 
     [HttpGet("{stateId}/city")]
@@ -166,62 +105,21 @@ public class StatesController : ControllerBase
         [FromRoute] int stateId,
         [FromQuery] string name
        )
-    
+
     {
-        var state = _context.States.Find(stateId);
-        var cityStates = _context.Cities.Where(c => c.StateId == state.Id);
-        
-        
-        if (state == null)
-            return NotFound("State not found.");
+        IQueryable<City> stateCities = _service.GetCityByStateId(stateId, name);
 
-
-        if (!string.IsNullOrEmpty(name))
-        {
-            var cityQuery = cityStates.Where(c => c.Name.ToUpper().Contains(name.ToUpper()));
-
-            if (cityQuery.Count() == 0)
-            {
-                return NoContent();
-            }
-
-            var queryResponse = cityQuery
-                .Select(c => new GetCityByIdViewModel(
-                    c.Id, 
-                    c.Name, 
-                    c.State.Id, 
-                    c.State.Name, 
-                    c.State.Initials))
-                .ToList();
-
-            return Ok(queryResponse);
-
-        }
-        
-         
-        if (cityStates.Count() == 0)
-        {
-            return NoContent();
-        }
-
-        
-        List<GetCityByIdViewModel> body = new();
-        cityStates.ToList().ForEach(
-            c => {
-                body.Add(new GetCityByIdViewModel(
-                    c.Id,
-                    c.Name,
-                    c.StateId,
-                    c.State.Name,
-                    c.State.Initials
-                    ));
-                                
-            }
-            );
+        List<GetCityByIdViewModel> body = 
+            stateCities
+               .Select(c => new GetCityByIdViewModel(
+                   c.Id,
+                   c.Name,
+                   c.State.Id,
+                   c.State.Name,
+                   c.State.Initials))
+               .ToList();
 
         return Ok(body);
-
     }
-
 }
 
