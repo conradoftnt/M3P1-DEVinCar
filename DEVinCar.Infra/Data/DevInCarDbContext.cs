@@ -151,7 +151,8 @@ public class DevInCarDbContext : DbContext
 
             entity.HasOne(u => u.UserSeller)
                 .WithMany()
-                .HasForeignKey(u => u.SellerId);       
+                .HasForeignKey(u => u.SellerId)
+                .OnDelete(DeleteBehavior.NoAction);       
         });
 
         modelBuilder.Entity<SaleCar>(entity =>

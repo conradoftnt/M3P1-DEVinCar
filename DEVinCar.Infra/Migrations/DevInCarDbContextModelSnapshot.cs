@@ -4,27 +4,25 @@ using DEVinCar.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DEVinCar.Api.Data.Migrations
+namespace DEVinCar.Infra.Migrations
 {
     [DbContext(typeof(DevInCarDbContext))]
-    [Migration("20220823223452_fixDbSetCity")]
-    partial class fixDbSetCity
+    partial class DevInCarDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Address", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +57,7 @@ namespace DEVinCar.Api.Data.Migrations
                     b.ToTable("Addresses", (string)null);
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Car", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Car", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -143,7 +141,7 @@ namespace DEVinCar.Api.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.City", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,7 +164,7 @@ namespace DEVinCar.Api.Data.Migrations
                     b.ToTable("Cities", (string)null);
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Delivery", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Delivery", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,7 +190,7 @@ namespace DEVinCar.Api.Data.Migrations
                     b.ToTable("Deliveries", (string)null);
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Sale", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -218,7 +216,7 @@ namespace DEVinCar.Api.Data.Migrations
                     b.ToTable("Sales", (string)null);
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.SaleCar", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.SaleCar", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -241,7 +239,7 @@ namespace DEVinCar.Api.Data.Migrations
                     b.ToTable("SaleCars", (string)null);
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.State", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.State", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -428,7 +426,7 @@ namespace DEVinCar.Api.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.User", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -493,9 +491,9 @@ namespace DEVinCar.Api.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Address", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Address", b =>
                 {
-                    b.HasOne("DEVinCar.Api.Models.City", "City")
+                    b.HasOne("DEVinCar.Domain.Models.City", "City")
                         .WithMany("Addresses")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -504,9 +502,9 @@ namespace DEVinCar.Api.Data.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.City", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.City", b =>
                 {
-                    b.HasOne("DEVinCar.Api.Models.State", "State")
+                    b.HasOne("DEVinCar.Domain.Models.State", "State")
                         .WithMany("Cities")
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -515,15 +513,15 @@ namespace DEVinCar.Api.Data.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Delivery", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Delivery", b =>
                 {
-                    b.HasOne("DEVinCar.Api.Models.Address", "Address")
+                    b.HasOne("DEVinCar.Domain.Models.Address", "Address")
                         .WithMany("Deliveries")
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DEVinCar.Api.Models.Sale", "Sale")
+                    b.HasOne("DEVinCar.Domain.Models.Sale", "Sale")
                         .WithMany("Deliveries")
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -534,18 +532,18 @@ namespace DEVinCar.Api.Data.Migrations
                     b.Navigation("Sale");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Sale", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Sale", b =>
                 {
-                    b.HasOne("DEVinCar.Api.Models.User", "UserBuyer")
+                    b.HasOne("DEVinCar.Domain.Models.User", "UserBuyer")
                         .WithMany()
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DEVinCar.Api.Models.User", "UserSeller")
+                    b.HasOne("DEVinCar.Domain.Models.User", "UserSeller")
                         .WithMany()
                         .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("UserBuyer");
@@ -553,15 +551,15 @@ namespace DEVinCar.Api.Data.Migrations
                     b.Navigation("UserSeller");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.SaleCar", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.SaleCar", b =>
                 {
-                    b.HasOne("DEVinCar.Api.Models.Car", "Car")
+                    b.HasOne("DEVinCar.Domain.Models.Car", "Car")
                         .WithMany("Sales")
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DEVinCar.Api.Models.Sale", "Sale")
+                    b.HasOne("DEVinCar.Domain.Models.Sale", "Sale")
                         .WithMany("Cars")
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -572,29 +570,29 @@ namespace DEVinCar.Api.Data.Migrations
                     b.Navigation("Sale");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Address", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Address", b =>
                 {
                     b.Navigation("Deliveries");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Car", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Car", b =>
                 {
                     b.Navigation("Sales");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.City", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.City", b =>
                 {
                     b.Navigation("Addresses");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.Sale", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.Sale", b =>
                 {
                     b.Navigation("Cars");
 
                     b.Navigation("Deliveries");
                 });
 
-            modelBuilder.Entity("DEVinCar.Api.Models.State", b =>
+            modelBuilder.Entity("DEVinCar.Domain.Models.State", b =>
                 {
                     b.Navigation("Cities");
                 });
