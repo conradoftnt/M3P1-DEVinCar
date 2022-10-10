@@ -2,6 +2,7 @@ using DEVinCar.Domain.DTOs;
 using DEVinCar.Domain.Models;
 using DEVinCar.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using DEVinCar.Api.Config;
 
 namespace DEVinCar.Api.Controllers;
 
@@ -10,16 +11,27 @@ namespace DEVinCar.Api.Controllers;
 public class CarController : ControllerBase
 {
     private readonly ICarsService _service;
+    private readonly CacheService<Car> _cache;
 
-    public CarController(ICarsService service)
+    public CarController(ICarsService service, CacheService<Car> cache)
     {
         _service = service;
+        _cache = cache;
     }
 
     [HttpGet("{carId}")]
     public ActionResult<Car> GetById([FromRoute] int carId)
     {
-        return Ok(_service.GetById(carId));
+
+        Car car;
+
+        if (!_cache.TryGetValue(carId.ToString(), out car))
+        {
+            car = _service.GetById(carId);
+            _cache.Set(carId.ToString(), car);
+        }
+
+        return Ok(car);
     }
 
     [HttpGet]
@@ -37,13 +49,19 @@ public class CarController : ControllerBase
         [FromBody] CarDTO body
     )
     {
-        return Created("api/car", _service.Post(body));
+        Car car = _service.Post(body);
+
+        _cache.Set(car.Id.ToString(), car);
+
+        return Created("api/car", car);
     }
 
     [HttpDelete("{carId}")]
     public ActionResult Delete([FromRoute] int carId)
     {
         _service.Delete(carId);
+
+        _cache.Remove(carId.ToString());
 
         return NoContent();
     }
@@ -52,6 +70,8 @@ public class CarController : ControllerBase
     public ActionResult Put([FromBody] CarDTO carDto, [FromRoute] int carId)
     {
         _service.Put(carDto, carId);
+
+        _cache.Remove(carId.ToString());
 
         return NoContent();
     }
