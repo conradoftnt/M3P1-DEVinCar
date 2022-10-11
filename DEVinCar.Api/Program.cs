@@ -6,6 +6,7 @@ using DEVinCar.Domain.Interfaces.Services;
 using DEVinCar.Domain.Services;
 using DEVinCar.Api.Config;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using DEVinCar.Domain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IStatesRepository,StatesRepository>();
 builder.Services.AddScoped<IStatesService,StatesService>();
 builder.Services.AddScoped<IUsersRepository,UsersRepository>();
 builder.Services.AddScoped<IUsersService,UsersService>();
+builder.Services.AddScoped<CacheService<Car>>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
