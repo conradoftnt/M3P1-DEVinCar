@@ -5,7 +5,11 @@ using DEVinCar.Infra.Data.Repositories;
 using DEVinCar.Domain.Interfaces.Services;
 using DEVinCar.Domain.Services;
 using DEVinCar.Api.Config;
+using DEVinCar.Api.Security;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +34,25 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMemoryCache();
 
+var key = Encoding.ASCII.GetBytes(Settings.Secret);
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
 builder.Services.AddMvc( config => {
     config.ReturnHttpNotAcceptable = true;
     config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
@@ -50,6 +73,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 app.UseMiddleware<ErrorMiddleware>();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

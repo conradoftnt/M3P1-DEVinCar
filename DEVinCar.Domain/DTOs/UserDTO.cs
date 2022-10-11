@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using DEVinCar.Domain.Annotations;
+using DEVinCar.Domain.Enuns;
 
 namespace DEVinCar.Domain.DTOs{
     public class UserDTO{
@@ -15,6 +16,9 @@ namespace DEVinCar.Domain.DTOs{
         [MinLength(4, ErrorMessage = "The password must contain at least 4 digits")]
         [DistinctCharactersAttribute]
         public string Password { get; set; }
+        [Required(ErrorMessage = "The role is required")]
+        [MaxLength(50)]
+        public Roles Role { get; set; }
         [DataType(DataType.Date, ErrorMessage="Date must be valid")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [CheckAgeAttribute(18)]
