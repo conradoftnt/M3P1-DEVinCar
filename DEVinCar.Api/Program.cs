@@ -29,6 +29,8 @@ builder.Services.AddScoped<IStatesService,StatesService>();
 builder.Services.AddScoped<IUsersRepository,UsersRepository>();
 builder.Services.AddScoped<IUsersService,UsersService>();
 builder.Services.AddScoped<CacheService<Car>>();
+builder.Services.AddScoped<ILoginRepository,LoginRepository>();
+builder.Services.AddScoped<ILoginService,LoginService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
