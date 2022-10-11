@@ -48,7 +48,8 @@ public class ErrorMiddleware
         else
         {
             status = HttpStatusCode.InternalServerError;
-            message = "An internal server error has occurred, please contact IT";
+            message = ex.Message;
+            // message = "An internal server error has occurred, please contact IT";
         }
 
         var response = new ErrorDTO(message);

@@ -87,6 +87,7 @@ public class UsersService : IUsersService
             Name = userDto.Name,
             Email = userDto.Email,
             Password = userDto.Password,
+            Role = userDto.Role,
             BirthDate = userDto.BirthDate
         };
 

@@ -46,7 +46,8 @@ namespace DEVinCar.Infra.Migrations
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Role = table.Column<int>(type: "int", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -229,13 +230,13 @@ namespace DEVinCar.Infra.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "BirthDate", "Email", "Name", "Password" },
+                columns: new[] { "Id", "BirthDate", "Email", "Name", "Password", "Role" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2000, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "jose@email.com", "Jose", "123456opp78" },
-                    { 2, new DateTime(1999, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "andrea@email.com", "Andrea", "987dasd654321" },
-                    { 3, new DateTime(2005, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "adao@email.com", "Adao", "2589asd" },
-                    { 4, new DateTime(2001, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "monique@email.com", "Monique", "asd45uio" }
+                    { 1, new DateTime(2000, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "jose@email.com", "Jose", "123456opp78", 1 },
+                    { 2, new DateTime(1999, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "andrea@email.com", "Andrea", "987dasd654321", 1 },
+                    { 3, new DateTime(2005, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "adao@email.com", "Adao", "2589asd", 2 },
+                    { 4, new DateTime(2001, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "monique@email.com", "Monique", "asd45uio", 3 }
                 });
 
             migrationBuilder.CreateIndex(

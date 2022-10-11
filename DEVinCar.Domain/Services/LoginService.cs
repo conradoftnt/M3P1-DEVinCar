@@ -20,7 +20,7 @@ public class LoginService : ILoginService
 
         if (user == null)
         {
-            throw new BadRequestException($"The email '{email}' is not being using!");
+            throw new NotFoundException($"The email '{email}' is not being using!");
         }
 
         if (user.Password != password)

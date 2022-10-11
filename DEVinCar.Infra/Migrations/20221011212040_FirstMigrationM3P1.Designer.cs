@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEVinCar.Infra.Migrations
 {
     [DbContext(typeof(DevInCarDbContext))]
-    [Migration("20221010220350_FirstMigrationM3P1")]
+    [Migration("20221011212040_FirstMigrationM3P1")]
     partial class FirstMigrationM3P1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -454,6 +454,10 @@ namespace DEVinCar.Infra.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("Role")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
@@ -465,7 +469,8 @@ namespace DEVinCar.Infra.Migrations
                             BirthDate = new DateTime(2000, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "jose@email.com",
                             Name = "Jose",
-                            Password = "123456opp78"
+                            Password = "123456opp78",
+                            Role = 1
                         },
                         new
                         {
@@ -473,7 +478,8 @@ namespace DEVinCar.Infra.Migrations
                             BirthDate = new DateTime(1999, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "andrea@email.com",
                             Name = "Andrea",
-                            Password = "987dasd654321"
+                            Password = "987dasd654321",
+                            Role = 1
                         },
                         new
                         {
@@ -481,7 +487,8 @@ namespace DEVinCar.Infra.Migrations
                             BirthDate = new DateTime(2005, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "adao@email.com",
                             Name = "Adao",
-                            Password = "2589asd"
+                            Password = "2589asd",
+                            Role = 2
                         },
                         new
                         {
@@ -489,7 +496,8 @@ namespace DEVinCar.Infra.Migrations
                             BirthDate = new DateTime(2001, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "monique@email.com",
                             Name = "Monique",
-                            Password = "asd45uio"
+                            Password = "asd45uio",
+                            Role = 3
                         });
                 });
 
