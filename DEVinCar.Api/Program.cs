@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DEVinCar.Domain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IStatesRepository,StatesRepository>();
 builder.Services.AddScoped<IStatesService,StatesService>();
 builder.Services.AddScoped<IUsersRepository,UsersRepository>();
 builder.Services.AddScoped<IUsersService,UsersService>();
+builder.Services.AddScoped<CacheService<Car>>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
