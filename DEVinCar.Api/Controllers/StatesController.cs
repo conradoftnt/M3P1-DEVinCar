@@ -4,11 +4,13 @@ using DEVinCar.Domain.ViewModels;
 using DEVinCar.Domain.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DEVinCar.Api.Controllers;
 
 [ApiController]
 [Route("api/state")]
+[Authorize]
 public class StatesController : ControllerBase
 {
     private readonly IStatesService _service;

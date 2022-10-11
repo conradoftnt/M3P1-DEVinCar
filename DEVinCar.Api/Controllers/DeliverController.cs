@@ -1,11 +1,13 @@
 ﻿using DEVinCar.Domain.Models;
 using DEVinCar.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DEVinCar.Api.Controllers;
 
 [ApiController]
 [Route("api/deliver")]
+[Authorize]
 public class DeliverController : ControllerBase
 {
     private readonly IDeliverService _service;

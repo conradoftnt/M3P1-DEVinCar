@@ -9,6 +9,7 @@ namespace DEVinCar.Api.Controllers;
 
 [ApiController]
 [Route("api/login")]
+[Authorize]
 public class LoginController : ControllerBase
 {
     private readonly ILoginService _service;

@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DEVinCar.Domain.ViewModels;
 using DEVinCar.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DEVinCar.Api.Controllers;
 
 [ApiController]
 [Route("api/sales")]
+[Authorize]
 public class SalesController : ControllerBase
 {
     private readonly ISalesService _service;
@@ -42,6 +44,7 @@ public class SalesController : ControllerBase
     }
 
     [HttpPost("{saleId}/item")]
+    [Authorize(Roles = "Gerente, Vendedor")]
     public ActionResult<SaleCar> PostSale(
        [FromBody] SaleCarDTO body,
        [FromRoute] int saleId
