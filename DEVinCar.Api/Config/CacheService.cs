@@ -6,7 +6,7 @@ public class CacheService<TEntity>
 {
     private readonly IMemoryCache _cache;
     private string _baseKey;
-    private TimeSpan _expiracao;
+    private TimeSpan _expiracao = new TimeSpan(0,5,0);
     public CacheService(IMemoryCache cache)
     {
         _cache = cache;
